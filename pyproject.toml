@@ -1,7 +1,7 @@
 [project]
 name = "presentation-coach"
 version = "0.1.0"
-description = "Add your description here"
+description = "Segment-based presentation practice coach"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.143.3",
@@ -14,3 +14,10 @@ dev = [
     "httpx>=0.28.1",
     "pytest>=9.1.1",
 ]
+
+[project.optional-dependencies]
+llm = ["transformers>=4.45", "torch>=2.4", "accelerate>=1.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

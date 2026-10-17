@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Presentation Coach</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><a href="#" id="home-link">Presentation Coach</a></h1>
+    <span id="topbar-script" class="muted"></span>
+  </header>
+
+  <!-- Setup: paste, split, edit -->
+  <main id="view-setup" class="view">
+    <section class="card" id="saved-card" hidden>
+      <h2>Saved scripts</h2>
+      <ul id="saved-list" class="saved-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2>1. Paste your script</h2>
+      <label>Title <input id="title" type="text" placeholder="My talk"></label>
+      <textarea id="script" rows="12" placeholder="Paste your script here. Blank lines separate paragraphs."></textarea>
+      <div class="row">
+        <label>Target pace <input id="wpm" type="number" value="140" min="60" max="250"> wpm</label>
+        <label>Time limit <input id="limit" type="number" value="" min="0" step="0.5" placeholder="none"> min</label>
+        <label>Split by
+          <select id="mode">
+            <option value="auto">Auto (1–3 sentences)</option>
+            <option value="sentence">Sentence</option>
+            <option value="paragraph">Paragraph</option>
+            <option value="llm" id="llm-option">Local LLM</option>
+          </select>
+        </label>
+        <button id="split-btn" class="primary">Split into segments</button>
+      </div>
+      <p id="split-note" class="note" hidden></p>
+    </section>
+
+    <section class="card" id="edit-card" hidden>
+      <h2>2. Check the segments</h2>
+      <p class="muted">Edit text freely. Click inside a segment and use <b>Split here</b> to break it at the cursor.</p>
+      <ol id="segment-editor" class="segment-editor"></ol>
+      <div class="row">
+        <span id="edit-total" class="muted"></span>
+        <button id="save-btn" class="primary">Save &amp; practice</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Practice -->
+  <main id="view-practice" class="view" hidden>
+    <section class="clock-bar">
+      <div>
+        <div class="label">Total</div>
+        <div class="big" id="total-clock">0:00</div>
+        <div class="muted" id="total-sub"></div>
+      </div>
+      <div>
+        <div class="label">This segment</div>
+        <div class="big" id="seg-clock">0:00</div>
+        <div class="muted" id="seg-sub"></div>
+      </div>
+      <div>
+        <div class="label">Segment</div>
+        <div class="big" id="seg-count">1 / 1</div>
+        <div class="muted" id="state-label">Ready</div>
+      </div>
+    </section>
+    <div class="progress"><div id="seg-progress"></div></div>
+
+    <section class="teleprompter">
+      <p id="prev-text" class="prev"></p>
+      <p id="current-text" class="current"></p>
+      <p id="next-text" class="next"></p>
+    </section>
+
+    <section class="controls">
+      <button id="btn-start" class="primary">Start <kbd>Space</kbd></button>
+      <button id="btn-advance" class="primary">Segment done <kbd>Space</kbd></button>
+      <button id="btn-stop" class="danger">Stop — I slipped <kbd>Esc</kbd></button>
+      <button id="btn-resume" class="primary">Resume from here <kbd>Enter</kbd></button>
+      <button id="btn-rewind">Redo previous segment <kbd>⌫</kbd></button>
+      <label class="record"><input type="checkbox" id="record" checked> Record audio</label>
+    </section>
+
+    <section id="finish-card" class="card" hidden>
+      <h2>Run complete</h2>
+      <p id="finish-summary"></p>
+      <div class="row">
+        <button id="btn-again" class="primary">Practice again</button>
+        <button id="btn-history">See all runs</button>
+        <button id="btn-edit">Edit script</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Segments</h2>
+      <table class="seg-table">
+        <thead><tr><th>#</th><th>Segment</th><th>Target</th><th>Actual</th><th>Δ</th><th>Tries</th></tr></thead>
+        <tbody id="seg-table"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- History -->
+  <main id="view-history" class="view" hidden>
+    <section class="card">
+      <h2>Runs</h2>
+      <div class="table-scroll"><table class="seg-table" id="history-table"></table></div>
+      <div class="row"><button id="btn-back" class="primary">Back to practice</button></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
